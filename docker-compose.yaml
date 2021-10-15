@@ -77,20 +77,20 @@ services:
   #     - elasticsearch
   #   restart: on-failure
 
-  # rabbitmq:
-  #   image: "rabbitmq:3.8.17-management"
-  #   ports:
-  #     - "15673:15672"
-  #     - "5673:5672"
-  #   env_file:
-  #     - ./.env/rabbitmq.env
-  #   # logging:
-  #   #   driver: gelf
-  #   #   options:
-  #   #     gelf-address: "udp://localhost:12201"
-  #   #     tag: "test_app_rabbit"
-  #   networks:
-  #     - app_net
+  rabbitmq:
+    image: "rabbitmq:3.8.17-management"
+    ports:
+      - "15673:15672"
+      - "5673:5672"
+    env_file:
+      - ./.env/rabbitmq.env
+    # logging:
+    #   driver: gelf
+    #   options:
+    #     gelf-address: "udp://localhost:12201"
+    #     tag: "test_app_rabbit"
+    networks:
+      - app_net
   #   # depends_on:
   #   #   - elasticsearch
 
@@ -114,55 +114,55 @@ services:
   #   depends_on:
   #     - rabbitmq
 
-  # publisher_api:
-  #   build: ./UserAntropometricsAPI
-  #   ports:
-  #     - "8091:8081"
-  #   env_file:
-  #     - ./.env/api_env.env
-  #   # logging:
-  #   #   driver: gelf
-  #   #   options:
-  #   #     gelf-address: "udp://localhost:12201"
-  #   #     tag: "test_app_publisher_api"
-  #   networks:
-  #     - app_net
-  #   depends_on:
-  #     - rabbitmq
+  publisher_api:
+    build: ./UserAntropometricsAPI
+    ports:
+      - "8091:8081"
+    env_file:
+      - ./.env/api_env.env
+    # logging:
+    #   driver: gelf
+    #   options:
+    #     gelf-address: "udp://localhost:12201"
+    #     tag: "test_app_publisher_api"
+    networks:
+      - app_net
+    depends_on:
+      - rabbitmq
 
-  # reciever_api:
-  #   build: ./Industry4MedicalRecieverAPI
-  #   env_file:
-  #     - ./.env/api_env.env
-  #   # logging:
-  #   #   driver: gelf
-  #   #   options:
-  #   #     gelf-address: "udp://localhost:12201"
-  #   #     tag: "test_app_reciever_api"
-  #   networks:
-  #     - app_net
-  #   depends_on:
-  #     - mysql
-  #   links:
-  #     - rabbitmq
-  #   restart: on-failure
+  reciever_api:
+    build: ./Industry4MedicalRecieverAPI
+    env_file:
+      - ./.env/api_env.env
+    # logging:
+    #   driver: gelf
+    #   options:
+    #     gelf-address: "udp://localhost:12201"
+    #     tag: "test_app_reciever_api"
+    networks:
+      - app_net
+    depends_on:
+      - mysql
+    links:
+      - rabbitmq
+    restart: on-failure
 
-  # mysql_api:
-  #   build: ./mysql_api
-  #   ports:
-  #     - "8090:8080"
-  #   env_file:
-  #     - ./.env/api_env.env
-  #   # logging:
-  #   #   driver: gelf
-  #   #   options:
-  #   #     gelf-address: "udp://localhost:12201"
-  #   #     tag: "test_app_mysql_api"
-  #   networks:
-  #     - app_net
-  #   depends_on:
-  #     - mysql
-  #   restart: on-failure
+  mysql_api:
+    build: ./mysql_api
+    ports:
+      - "8090:8080"
+    env_file:
+      - ./.env/api_env.env
+    # logging:
+    #   driver: gelf
+    #   options:
+    #     gelf-address: "udp://localhost:12201"
+    #     tag: "test_app_mysql_api"
+    networks:
+      - app_net
+    depends_on:
+      - mysql
+    restart: on-failure
 
   login_register_api:
     build: ./industry4medical_login_register

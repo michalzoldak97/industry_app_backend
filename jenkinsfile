@@ -12,6 +12,7 @@ pipeline {
                  echo "hello world" 
                  cp /home/paleta77/industry_app/.env ./ -r
                 '''
+                sh "docker-compose build"
             }
         }
         stage('Test') {

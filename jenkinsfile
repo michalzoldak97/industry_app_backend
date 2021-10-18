@@ -9,7 +9,7 @@ pipeline {
                 echo 'Building..'
                 sh 'cp /home/paleta77/industry_app/.env ./ -r'
                 script {
-                    def mysqlAPI = docker.build("mysqlAPI:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile .")
+                    def mysqlAPI = docker.build("mysql_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile .")
                 }
             }
         }

@@ -3,6 +3,15 @@ pipeline {
     triggers {
         githubPush()
     }
+    environment {
+        mysql_api = ''
+        login_register_api = ''
+        reciever_api = ''
+        kibana = ''
+        logstash = ''
+        user_antropometrics_api = ''
+        mysql = ''
+    }
     stages {
         stage('Build') {
             steps {
@@ -10,14 +19,38 @@ pipeline {
 
                 echo 'Building mysql_api..'
                 script {
-                    mysqlAPI = docker.build("mysql_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile ./mysql_api")
+                    mysql_api = docker.build("mysql_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile ./mysql_api")
+                }
+
+                echo 'Building UserAntropometricsAPI..'
+                script {
+                    user_antropometrics_api = docker.build("user_antropometrics_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/UserAntropometricsAPI/Dockerfile ./UserAntropometricsAPI")
                 }
 
                 echo 'Building login_register..'
                 script {
-                    mysqlAPI = docker.build("login_register:${env.BUILD_ID}","-f ${env.WORKSPACE}/industry4medical_login_register/Dockerfile ./industry4medical_login_register")
+                    login_register_api = docker.build("login_register_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/industry4medical_login_register/Dockerfile ./industry4medical_login_register")
                 }
 
+                echo 'Building reciever_api..'
+                script {
+                    reciever_api = docker.build("reciever_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalRecieverAPI/Dockerfile ./Industry4MedicalRecieverAPI")
+                }
+
+                echo 'Building kibana..'
+                script {
+                    kibana = docker.build("kibana:${env.BUILD_ID}","-f ${env.WORKSPACE}/kibana/Dockerfile ./kibana")
+                }
+
+                echo 'Building logstash..'
+                script {
+                    logstash = docker.build("logstash:${env.BUILD_ID}","-f ${env.WORKSPACE}/logstash/Dockerfile ./logstash")
+                }
+
+                echo 'Building mysql..'
+                script {
+                    logstash = docker.build("mysql:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql/Dockerfile ./mysql")
+                }
 
                 //TODO: fix "Step 2/2 : FROM docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION} invalid reference format"
                 //echo 'Building elasticsearch...'

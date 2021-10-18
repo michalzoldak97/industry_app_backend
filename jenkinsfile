@@ -6,14 +6,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                
                 echo 'Building..'
-                sh '''#!/bin/bash
-                 echo "hello world" 
-                 cp /home/paleta77/industry_app/.env ./ -r
-                '''
-                sh "docker run hello-world"
-                sh "docker-compose build"
+                sh 'cp /home/paleta77/industry_app/.env ./ -r'
+                def mysql = docker.build("mysql:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql/Dockerfile .")
             }
         }
         stage('Test') {
@@ -24,9 +19,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh '''#!/bin/bash
-                 docker-compose up
-                '''
             }
         }
     }

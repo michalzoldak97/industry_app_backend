@@ -8,15 +8,22 @@ pipeline {
             steps {
                 sh 'cp /home/paleta77/industry_app/.env ./ -r'
 
-                echo 'Building mysql_api...'
+                echo 'Building mysql_api..'
                 script {
                     mysqlAPI = docker.build("mysql_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile ./mysql_api")
                 }
 
-                echo 'Building elasticsearch...'
+                echo 'Building login_register..'
                 script {
-                    mysqlAPI = docker.build("elasticsearch:${env.BUILD_ID}","-f ${env.WORKSPACE}/elasticsearch/Dockerfile ./elasticsearch")
+                    mysqlAPI = docker.build("login_register:${env.BUILD_ID}","-f ${env.WORKSPACE}/industry4medical_login_register/Dockerfile ./industry4medical_login_register")
                 }
+
+
+                //TODO: fix "Step 2/2 : FROM docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION} invalid reference format"
+                //echo 'Building elasticsearch...'
+                //script {
+                //    mysqlAPI = docker.build("elasticsearch:${env.BUILD_ID}","-f ${env.WORKSPACE}/elasticsearch/Dockerfile ./elasticsearch")
+                //}
             }
         }
         stage('Test') {

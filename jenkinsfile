@@ -9,14 +9,9 @@ pipeline {
                 echo 'Building..'
                 sh 'cp /home/paleta77/industry_app/.env ./ -r'
                 ls 
-
-                docker info 
-                docker build -t jenkins-demo:${BUILD_NUMBER} . 
-                docker tag jenkins-demo:${BUILD_NUMBER} jenkins-demo:latest 
-                docker images
-                //script {
-                //    def mysqlAPI = docker.build("mysql_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile .")
-                //}
+                script {
+                    mysqlAPI = docker.build("mysql_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile .")
+                }
             }
         }
         stage('Test') {

@@ -46,7 +46,7 @@ pipeline {
 
                 echo 'Building logstash..'
                 script {
-                    logstash = docker.build("logstash:${env.BUILD_ID}","-f ${env.WORKSPACE}/logstash/Dockerfile ./logstash" --build-arg ELK_VERSION=7.13.1)
+                    logstash = docker.build("logstash:${env.BUILD_ID}","-f ${env.WORKSPACE}/logstash/Dockerfile ./logstash", --build-arg ELK_VERSION=7.13.1)
                 }
 
                 echo 'Building mysql..'

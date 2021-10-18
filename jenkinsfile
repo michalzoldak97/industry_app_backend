@@ -37,10 +37,12 @@ pipeline {
                     reciever_api = docker.build("reciever_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalRecieverAPI/Dockerfile ./Industry4MedicalRecieverAPI")
                 }
 
-                echo 'Building kibana..'
-                script {
-                    kibana = docker.build("kibana:${env.BUILD_ID}","-f ${env.WORKSPACE}/kibana/Dockerfile ./kibana")
-                }
+                //TODO fix:
+                //Step 1/2 : ARG ELK_VERSION Step 2/2 : FROM docker.elastic.co/kibana/kibana:${ELK_VERSION}
+                //echo 'Building kibana..'
+                //script {
+                //    kibana = docker.build("kibana:${env.BUILD_ID}","-f ${env.WORKSPACE}/kibana/Dockerfile ./kibana")
+                //}
 
                 echo 'Building logstash..'
                 script {
@@ -52,7 +54,8 @@ pipeline {
                     logstash = docker.build("mysql:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql/Dockerfile ./mysql")
                 }
 
-                //TODO: fix "Step 2/2 : FROM docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION} invalid reference format"
+                //TODO: fix 
+                //"Step 2/2 : FROM docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION} invalid reference format"
                 //echo 'Building elasticsearch...'
                 //script {
                 //    mysqlAPI = docker.build("elasticsearch:${env.BUILD_ID}","-f ${env.WORKSPACE}/elasticsearch/Dockerfile ./elasticsearch")

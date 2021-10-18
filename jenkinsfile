@@ -8,7 +8,9 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh 'cp /home/paleta77/industry_app/.env ./ -r'
-                def mysql = docker.build("mysql:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql/Dockerfile .")
+                script {
+                    def mysql = docker.build("mysql:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql/Dockerfile .")
+                }
             }
         }
         stage('Test') {

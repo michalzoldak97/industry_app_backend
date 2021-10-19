@@ -36,6 +36,11 @@ pipeline {
                 script {
                     reciever_api = docker.build("paleta77/reciever_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalRecieverAPI/Dockerfile ./Industry4MedicalRecieverAPI")
                 }
+                
+                echo 'Building publisher_api..'
+                script {
+                    publisher_api = docker.build("paleta77/publisher_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalPublisherAPI/Dockerfile ./Industry4MedicalPublisherAPI")
+                }
 
                 echo 'Building mysql..'
                 script {

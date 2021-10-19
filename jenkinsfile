@@ -20,22 +20,22 @@ pipeline {
 
                 echo 'Building mysql_api..'
                 script {
-                    mysql_api = docker.build("mysql_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile ./mysql_api")
+                    mysql_api = docker.build("paleta77/mysql_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/mysql_api/Dockerfile ./mysql_api")
                 }
 
                 echo 'Building UserAntropometricsAPI..'
                 script {
-                    user_antropometrics_api = docker.build("user_antropometrics_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/UserAntropometricsAPI/Dockerfile ./UserAntropometricsAPI")
+                    user_antropometrics_api = docker.build("paleta77/user_antropometrics_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/UserAntropometricsAPI/Dockerfile ./UserAntropometricsAPI")
                 }
 
                 echo 'Building login_register..'
                 script {
-                    login_register_api = docker.build("login_register_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/industry4medical_login_register/Dockerfile ./industry4medical_login_register")
+                    login_register_api = docker.build("paleta77/login_register_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/industry4medical_login_register/Dockerfile ./industry4medical_login_register")
                 }
 
                 echo 'Building reciever_api..'
                 script {
-                    reciever_api = docker.build("reciever_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalRecieverAPI/Dockerfile ./Industry4MedicalRecieverAPI")
+                    reciever_api = docker.build("paleta77/reciever_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalRecieverAPI/Dockerfile ./Industry4MedicalRecieverAPI")
                 }
                 
                 //echo 'Building publisher_api..'
@@ -77,6 +77,7 @@ pipeline {
     }
     post {
 		always {
+            sh "docker rmi $registry:$BUILD_NUMBER"
 			sh 'docker logout'
 		}
 	}

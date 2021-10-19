@@ -75,7 +75,8 @@ pipeline {
         }
         
     }
-    stages {
+    stages ('Cleanup') {
+        echo 'Starting cleanup..'
         steps{
             sh "docker rmi paleta77/mysql_api:$BUILD_NUMBER"
             sh "docker rmi paleta77/user_antropometrics_api:$BUILD_NUMBER"

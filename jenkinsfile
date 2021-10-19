@@ -37,10 +37,10 @@ pipeline {
                     reciever_api = docker.build("paleta77/reciever_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalRecieverAPI/Dockerfile ./Industry4MedicalRecieverAPI")
                 }
                 
-                echo 'Building publisher_api..'
-                script {
-                    publisher_api = docker.build("paleta77/publisher_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalPublisherAPI/Dockerfile ./Industry4MedicalPublisherAPI")
-                }
+                //echo 'Building publisher_api..'
+                //script {
+                //    publisher_api = docker.build("paleta77/publisher_api:${env.BUILD_ID}","-f ${env.WORKSPACE}/Industry4MedicalPublisherAPI/Dockerfile ./Industry4MedicalPublisherAPI")
+                //}
 
                 echo 'Building mysql..'
                 script {
@@ -56,11 +56,11 @@ pipeline {
         }
         stage('Publish') {
             steps {
-                echo 'Publishing image'
+                echo 'Publishing reciever_api image'
                 script {
-                    publisher_api.withRegistry(registryUri) {
-                        dockerInstance.push("${env.BUILD_NUMBER}")
-                        dockerInstance.push("latest")
+                    docker.withRegistry(paleta77/reciever_api) {
+                        reciever_api.push("${env.BUILD_NUMBER}")
+                        reciever_api.push("latest")
                     }
                 }
             }

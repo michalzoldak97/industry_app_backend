@@ -11,6 +11,7 @@ pipeline {
         logstash = ''
         user_antropometrics_api = ''
         mysql = ''
+        DOCKERHUB_CREDENTIALS=credentials('dockerhub-cred-paleta77')
     }
     stages {
         stage('Build') {
@@ -49,20 +50,16 @@ pipeline {
 
             }
         }
-        stage('Test') {
+        stage('Login') {
             steps {
-                echo 'Testing..'
+                echo 'Loging into dockerhub..'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
         stage('Publish') {
             steps {
                 echo 'Publishing reciever_api image'
-                script {
-                    docker.withRegistry('',paleta77/reciever_api) {
-                        reciever_api.push("${env.BUILD_NUMBER}")
-                        reciever_api.push("latest")
-                    }
-                }
+                sh 'docker push paleta77/reciever_api:latest'
             }
         }
     }

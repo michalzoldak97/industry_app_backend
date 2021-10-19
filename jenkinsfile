@@ -75,9 +75,16 @@ pipeline {
         }
         
     }
+    stages {
+        steps{
+            sh "docker rmi paleta77/mysql_api:$BUILD_NUMBER"
+            sh "docker rmi paleta77/user_antropometrics_api:$BUILD_NUMBER"
+            sh "docker rmi paleta77/login_register_api:$BUILD_NUMBER"
+            sh "docker rmi paleta77/reciever_api:$BUILD_NUMBER"
+        }
+    }
     post {
 		always {
-            sh "docker rmi $registry:$BUILD_NUMBER"
 			sh 'docker logout'
 		}
 	}

@@ -58,17 +58,19 @@ pipeline {
         }
         stage('Publish') {
             steps {
-                echo 'Publishing reciever_api image'
-                sh 'docker push paleta77/reciever_api:latest'
+                // echo 'Publishing reciever_api image'
+                // sh 'docker push paleta77/reciever_api:latest'
 
-                echo 'Publishing UserAntropometricsAPI image'
-                sh 'docker push paleta77/user_antropometrics_api:latest'
+                // echo 'Publishing UserAntropometricsAPI image'
+                // sh 'docker push paleta77/user_antropometrics_api:latest'
 
-                echo 'Publishing login_register image'
-                sh 'docker push paleta77/login_register_api:latest'
+                // echo 'Publishing login_register image'
+                // sh 'docker push paleta77/login_register_api:latest'
 
-                echo 'Publishing mysql_api image'
-                sh 'docker push paleta77/mysql_api:latest'
+                //  echo 'Publishing mysql_api image'
+                //  sh 'docker push paleta77/mysql_api:latest'
+
+                mysql_api.push('latest')
             }
         }
         

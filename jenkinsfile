@@ -70,6 +70,16 @@ pipeline {
                 //  echo 'Publishing mysql_api image'
                 //  sh 'docker push paleta77/mysql_api:latest'
                 script {
+                    echo 'Publishing UserAntropometricsAPI image'
+                    user_antropometrics_api.push('latest')
+
+                    echo 'Publishing reciever_api image'
+                    reciever_api('latest')
+
+                    echo 'Publishing login_register image'
+                    login_register_api('latest')
+
+                    echo 'Publishing mysql_api image'
                     mysql_api.push('latest')
                 }                
             }

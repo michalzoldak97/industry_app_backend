@@ -69,8 +69,9 @@ pipeline {
 
                 //  echo 'Publishing mysql_api image'
                 //  sh 'docker push paleta77/mysql_api:latest'
-
-                mysql_api.push('latest')
+                script {
+                    mysql_api.push('latest')
+                }                
             }
         }
         

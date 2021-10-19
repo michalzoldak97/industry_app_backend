@@ -57,12 +57,12 @@ pipeline {
         stage('Publish') {
             steps {
                 echo 'Publishing reciever_api image'
-                script {
-                    docker.withRegistry(paleta77/reciever_api) {
-                        reciever_api.push("${env.BUILD_NUMBER}")
-                        reciever_api.push("latest")
-                    }
-                }
+                //script {
+                //    docker.withRegistry(paleta77/reciever_api) {
+                //        reciever_api.push("${env.BUILD_NUMBER}")
+                //        reciever_api.push("latest")
+                //    }
+                //}
             }
         }
     }

@@ -9,13 +9,13 @@ const signToken = (id) => {
 };
 
 const createSendToken = (user, statusCode, res) => {
-  console.log(`user id: ${user.user_id}`);
   const token = signToken(user.user_id);
   res.status(statusCode).json({
     status: "success",
     token,
     data: {
       user: user.username,
+      daysSinceLastLogin: user.last_logged_in ?? "unknown",
     },
   });
 };
@@ -25,6 +25,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!activeUser) return next(new AppError("User not found", 404));
   if (!(await user.isCorrectPassword(req.body.password, activeUser.password)))
     return next(new AppError("Invalid credentials", 401));
+  user.updateLastLogin(activeUser.user_id);
   createSendToken(activeUser, 200, res);
 });
 

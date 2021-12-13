@@ -1,11 +1,17 @@
 const { catchAsync, AppError } = require("../error");
 const user = require("./userModel");
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
+};
+
+const isValidToken = async (token) => {
+  const decodedJwt = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  return decodedJwt.id;
 };
 
 const createSendToken = (user, statusCode, res) => {
@@ -36,6 +42,21 @@ exports.register = catchAsync(async (req, res, next) => {
     message: "success",
     data: {
       newUser: affectedRows,
+    },
+  });
+});
+
+exports.verify = catchAsync(async (req, res, next) => {
+  console.log("Verify called");
+  const userId = await isValidToken(req.body.token);
+  if (!userId) return next(new AppError("Token invalid", 401));
+  const status = userId ? 200 : 401;
+  console.log("Verify response");
+  const message = userId ? "success" : "fail";
+  res.status(status).json({
+    message: message,
+    data: {
+      userId: userId ?? 0,
     },
   });
 });

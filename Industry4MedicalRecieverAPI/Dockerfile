@@ -1,15 +1,13 @@
-FROM node
+FROM node:16
 
 WORKDIR /app
 
-COPY package.json .
-
-COPY package-lock.json .
+COPY package.json /app
 
 RUN npm install
 
-RUN npm install mysql
+RUN npm install nodemon -g
 
 COPY . .
 
-CMD ["node", "index.js"]
+CMD ["npm", "run", "start"]

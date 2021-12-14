@@ -15,8 +15,7 @@ const insertUserData = async (userID, sleepData) => {
   let insert_statement =
     "INSERT INTO tbl_user_sleep_data (user_id, sleep_data) VALUES (?, ?);";
 
-  const res = await db.query(insert_statement, data_to_insert);
-  console.log(`Rows: ${res.affectedRows}, duration: ${res.duration}`);
+  await db.query(insert_statement, data_to_insert);
 };
 
 const sendDataToDb = async (msg_recieved) => {
@@ -47,5 +46,5 @@ const sendDataToDb = async (msg_recieved) => {
       channel.ack(msg);
     }
   });
-  console.log(" [*] Waiting for messages. To exit press CTRL+C");
+  console.log(" [*] Waiting for messages. To exit press CTRL+ctrl");
 })();

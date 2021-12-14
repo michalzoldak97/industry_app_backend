@@ -47,11 +47,9 @@ exports.register = catchAsync(async (req, res, next) => {
 });
 
 exports.verify = catchAsync(async (req, res, next) => {
-  console.log("Verify called");
   const userId = await isValidToken(req.body.token);
   if (!userId) return next(new AppError("Token invalid", 401));
   const status = userId ? 200 : 401;
-  console.log("Verify response");
   const message = userId ? "success" : "fail";
   res.status(status).json({
     message: message,

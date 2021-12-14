@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "nodemon --watch . --exec 'mocha src/tests/user.js || true'",
-    "dev": "nodemon src/server.js",
+    "dev": "nodemon -L src/server.js",
     "start": "node src/server.js"
   },
   "keywords": [],

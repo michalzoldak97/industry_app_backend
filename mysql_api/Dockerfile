@@ -1,17 +1,11 @@
-FROM node
+FROM node:16
 
 WORKDIR /app
 
-COPY package.json .
-
-COPY package-lock.json .
+COPY package.json /app
 
 RUN npm install
 
-RUN npm install jsonwebtoken
-
 COPY . .
 
-EXPOSE 8080
-
-CMD ["node", "server.js"]
+CMD ["npm", "run", "dev"]

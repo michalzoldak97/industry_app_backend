@@ -148,31 +148,31 @@ services:
       - rabbitmq
     restart: always
 
-  # mysql_api:
-  #   build: ./mysql_api
-  #   ports:
-  #     - "8090:8080"
-  #   env_file:
-  #     - ./.env/api_env.env
-  #   # logging:
-  #   #   driver: gelf
-  #   #   options:
-  #   #     gelf-address: "udp://localhost:12201"
-  #   #     tag: "test_app_mysql_api"
-  #   networks:
-  #     - app_net
-  #   depends_on:
-  #     - mysql
-  #   restart: on-failure
+  mysql_api:
+    build: ./mysql_api
+    ports:
+      - "8090:8080"
+    env_file:
+      - ./.env/api_env.env
+    volumes:
+      - ./mysql_api/:/app
+      - /app/node_modules
+    # logging:
+    #   driver: gelf
+    #   options:
+    #     gelf-address: "udp://localhost:12201"
+    #     tag: "test_app_mysql_api"
+    networks:
+      - app_net
+    depends_on:
+      - mysql
+    restart: on-failure
 
   login_register_api:
     container_name: "login_register_api"
     build: ./industry4medical_login_register
     ports:
       - "8092:8082"
-    volumes:
-      - ./industry4medical_login_register/:/app
-      - /app/node_modules
     env_file:
       - ./.env/api_env.env
     # logging:

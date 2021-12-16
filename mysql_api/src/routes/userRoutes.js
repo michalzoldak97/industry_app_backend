@@ -6,6 +6,15 @@ const userController = require("../user");
 
 router.get("/", userController.getAllUsers);
 
-router.get("/:id", userController.getUser);
+router.use("/:id", userController.isIdCorrect);
+
+router
+  .route("/:id")
+  .get(userController.getUser)
+  .delete(userController.deleteUser);
+
+router.route("/:id/challenges").get(userController.getUserChallenges);
+
+router.route("/:id/challenge/:challenge").get(userController.getUserChallenge);
 
 module.exports = router;

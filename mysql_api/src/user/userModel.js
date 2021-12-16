@@ -2,7 +2,7 @@
 
 const mysql = require("../db");
 
-exports.selectUsers = async (reqUserId) => {
+exports.selectUsers = async () => {
   const query = `
                     SELECT 
                         u.user_id
@@ -11,8 +11,23 @@ exports.selectUsers = async (reqUserId) => {
                         ,u.last_logged_in
                     FROM tbl_user u
                     WHERE
-                        deactivated_datetime IS NULL
+                        u.deactivated_datetime IS NULL
     `;
-  const res = await mysql.query(query, []);
+  return await mysql.query(query, []);
+};
+
+exports.selectUserById = async (userId) => {
+  const query = `
+                  SELECT
+                      u.user_id
+                      ,u.username
+                      ,u.created_datetime
+                      ,u.last_logged_in
+                  FROM tbl_user u
+                  WHERE
+                      u.deactivated_datetime IS NULL
+                      AND u.user_id = ?
+  `;
+  const res = await mysql.query(query, [userId]);
   return res;
 };

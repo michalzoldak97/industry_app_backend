@@ -15,6 +15,9 @@ router
 
 router.route("/:id/challenges").get(userController.getUserChallenges);
 
-router.route("/:id/challenge/:challenge").get(userController.getUserChallenge);
+router
+  .route("/:id/challenge/:challenge")
+  .get(userController.getUserChallenge)
+  .post(userController.signUpUserChallenge);
 
 module.exports = router;

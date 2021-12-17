@@ -63,3 +63,16 @@ exports.getUserChallenge = catchAsync(async (req, res, next) => {
     next
   );
 });
+
+exports.signUpUserChallenge = catchAsync(async (req, res, next) => {
+  const result = await userModel.insertUserChallenge(
+    req.params.id,
+    req.params?.challenge
+  );
+  responseHandler.respond(
+    { head: +result, data: result },
+    { sCode: 200, errCode: 404, errMessage: result },
+    res,
+    next
+  );
+});

@@ -56,7 +56,7 @@ exports.selectUserChallenges = async (userId) => {
   return res.map((x) => x?.challenge_id);
 };
 
-exports.selectUserChallenge = async (userId, challenge_id) => {
+exports.selectUserChallenge = async (userId, challengeId) => {
   const query = `
                   SELECT
                       c.challenge_name
@@ -72,6 +72,25 @@ exports.selectUserChallenge = async (userId, challenge_id) => {
                       AND u.user_id = ?
                       AND c.challenge_id = ?
   `;
-  const res = await mysql.query(query, [userId, challenge_id]);
+  return await mysql.query(query, [userId, challengeId]);
+};
+
+exports.insertUserChallenge = async (userId, challengeId) => {
+  const checkQuery = `
+                        SELECT
+                            uc.challenge_id
+                        FROM tbl_user_challenge uc      
+                        WHERE
+                            uc.user_id = ?
+                            AND uc.challenge_id = ?
+  `;
+  const checkRes = await mysql.query(checkQuery, [userId, challengeId]);
+  if (checkRes[0] != undefined) return ["User already signed up"];
+  const query = `
+                  INSERT INTO tbl_user_challenge(user_id, challenge_id)
+                  VALUES
+                      (?, ?)
+  `;
+  const { affectedRows: res } = await mysql.query(query, [userId, challengeId]);
   return res;
 };

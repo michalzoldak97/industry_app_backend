@@ -4,6 +4,8 @@ const AppError = require("./appError");
 const handleJwtExpired = () =>
   new AppError("Your token has expired! Please log in again.", 401);
 
+const handleAuthError = () => new AppError("Authentication failed", 401);
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -29,6 +31,7 @@ const sendErrorProd = (err, res) => {
 
 const handleProdError = (err, req, res) => {
   if (err.name === "TokenExpiredError") err = handleJwtExpired();
+  else if (err.sname === "JsonWebTokenError") err = handleAuthError();
   sendErrorProd(err, res);
 };
 

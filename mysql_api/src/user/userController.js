@@ -76,3 +76,30 @@ exports.signUpUserChallenge = catchAsync(async (req, res, next) => {
     next
   );
 });
+
+exports.signOffUserChallenge = catchAsync(async (req, res, next) => {
+  const result = await userModel.deleteUserChallenge(
+    req.params.id,
+    req.params?.challenge
+  );
+  responseHandler.respondEmpty(
+    { head: +result, data: result },
+    { sCode: 204, errCode: 404, errMessage: "User - challenge not found" },
+    res,
+    next
+  );
+});
+
+exports.modifyUserChallenge = catchAsync(async (req, res, next) => {
+  const result = await userModel.updateUserChallenge(
+    req.body,
+    req.params.id,
+    req.params?.challenge
+  );
+  responseHandler.respondEmpty(
+    { head: +result, data: result },
+    { sCode: 204, errCode: 404, errMessage: "User - challenge not found" },
+    res,
+    next
+  );
+});

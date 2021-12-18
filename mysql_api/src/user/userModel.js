@@ -94,3 +94,42 @@ exports.insertUserChallenge = async (userId, challengeId) => {
   const { affectedRows: res } = await mysql.query(query, [userId, challengeId]);
   return res;
 };
+
+exports.deleteUserChallenge = async (userId, challengeId) => {
+  const query = `
+                  DELETE FROM tbl_user_challenge
+                  WHERE
+                      user_id = ?
+                      AND challenge_id = ?
+  `;
+  const { affectedRows: res } = await mysql.query(query, [userId, challengeId]);
+  if (res == 0) return "";
+  else return res;
+};
+
+exports.updateUserChallenge = async (params, userId, challengeId) => {
+  const query = `
+  UPDATE tbl_user_challenge uc
+  INNER JOIN(
+              SELECT
+                  ucx.user_challenge_id
+                  ,ucx.user_score + ? AS score_to_set
+                  ,?                 AS is_ch_completed
+              FROM tbl_user_challenge ucx
+              WHERE
+                ucx.user_id = ?
+                AND ucx.challenge_id = ?
+  )x                                                        ON uc.user_challenge_id = x.user_challenge_id
+  SET 
+    user_score = x.score_to_set
+    ,is_completed = x.is_ch_completed
+  `;
+  const { affectedRows: res } = await mysql.query(query, [
+    params.scoresToAdd,
+    params.setCompleted,
+    userId,
+    challengeId,
+  ]);
+  if (res == 0) return "";
+  else return res;
+};

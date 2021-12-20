@@ -1,10 +1,8 @@
-FROM node
+FROM node:16
 
 WORKDIR /app
 
-COPY package.json .
-
-COPY package-lock.json .
+COPY package.json /app
 
 RUN npm install
 
@@ -12,4 +10,4 @@ COPY . .
 
 EXPOSE 8081
 
-CMD ["node", "send.js"]
+CMD ["npm", "run", "start"]

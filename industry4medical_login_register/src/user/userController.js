@@ -26,6 +26,24 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
+const getUserPermissions = async (userId) => {
+  const permissionData = await user.selectPermissionData(userId);
+
+  const permissions = JSON.parse(permissionData[0].access).map((x) => x.id);
+  const subscribedChallenges = JSON.parse(permissionData[1].access).map(
+    (x) => x.id
+  );
+  const createdChallenges = JSON.parse(permissionData[2].access).map(
+    (x) => x.id
+  );
+  const access = {
+    permissions,
+    subscribedChallenges,
+    createdChallenges,
+  };
+  return access;
+};
+
 exports.login = catchAsync(async (req, res, next) => {
   const activeUser = await user.getUserByName(req.body.username);
   if (!activeUser) return next(new AppError("User not found", 404));
@@ -49,12 +67,12 @@ exports.register = catchAsync(async (req, res, next) => {
 exports.verify = catchAsync(async (req, res, next) => {
   const userId = await isValidToken(req.body.token);
   if (!userId) return next(new AppError("Token invalid", 401));
-  const status = userId ? 200 : 401;
-  const message = userId ? "success" : "fail";
-  res.status(status).json({
-    message: message,
+  const access = req.body?.getAccess ? await getUserPermissions(userId) : 0;
+  res.status(200).json({
+    message: "success",
     data: {
-      userId: userId ?? 0,
+      userId: userId,
+      userAccess: access,
     },
   });
 });

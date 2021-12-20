@@ -2,9 +2,9 @@
 const mysql = require("../db");
 
 exports.selectAllChallenges = async () => {
-  const query = `
-                    SELECT * FROM tbl_challenge
-    `;
+  // const query = `
+  //                   SELECT * FROM tbl_challenge
+  //   `;
   return await mysql.query(query, []);
 };
 
@@ -50,7 +50,5 @@ exports.updateChallenge = async (challengeData, challengeId) => {
     challengeData.validTo,
     challengeId,
   ]);
-
-  console.log(`${res.affectedRows}, ${res.changedRows}`);
   return res;
 };

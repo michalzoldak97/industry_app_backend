@@ -13,6 +13,7 @@ exports.verify = catchAsync(async (req, res, next) => {
   const response = await axios
     .post(`http://login_register_api:8082/verify`, {
       token,
+      getAccess: true,
     })
     .catch((err) => {
       return next(new AppError("User authentication failed", 401));
@@ -20,5 +21,6 @@ exports.verify = catchAsync(async (req, res, next) => {
   const userId = response.data.data.userId;
   if (!userId) return next(new AppError("Invalid user data", 401));
   req.userId = userId;
+  req.userAccess = response.data.data?.userAccess;
   next();
 });

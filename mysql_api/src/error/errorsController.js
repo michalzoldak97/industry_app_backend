@@ -24,7 +24,7 @@ const sendErrorProd = (err, res) => {
     console.log(`Error: ${err}`);
     res.status(err.statusCode).json({
       status: "error",
-      message: "Something went wrong. Please contact I4M Amin",
+      message: "Something went wrong. Please contact I4M Admin",
     });
   }
 };

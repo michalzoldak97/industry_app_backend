@@ -109,20 +109,20 @@ exports.deleteUserChallenge = async (userId, challengeId) => {
 
 exports.updateUserChallenge = async (params, userId, challengeId) => {
   const query = `
-  UPDATE tbl_user_challenge uc
-  INNER JOIN(
-              SELECT
-                  ucx.user_challenge_id
-                  ,ucx.user_score + ? AS score_to_set
-                  ,?                 AS is_ch_completed
-              FROM tbl_user_challenge ucx
-              WHERE
-                ucx.user_id = ?
-                AND ucx.challenge_id = ?
-  )x                                                        ON uc.user_challenge_id = x.user_challenge_id
-  SET 
-    user_score = x.score_to_set
-    ,is_completed = x.is_ch_completed
+                  UPDATE tbl_user_challenge uc
+                  INNER JOIN(
+                              SELECT
+                                  ucx.user_challenge_id
+                                  ,ucx.user_score + ? AS score_to_set
+                                  ,?                 AS is_ch_completed
+                              FROM tbl_user_challenge ucx
+                              WHERE
+                                ucx.user_id = ?
+                                AND ucx.challenge_id = ?
+                  )x                                                        ON uc.user_challenge_id = x.user_challenge_id
+                  SET 
+                    user_score = x.score_to_set
+                    ,is_completed = x.is_ch_completed
   `;
   const { affectedRows: res } = await mysql.query(query, [
     params.scoresToAdd,
@@ -132,4 +132,16 @@ exports.updateUserChallenge = async (params, userId, challengeId) => {
   ]);
   if (res == 0) return "";
   else return res;
+};
+
+exports.selectSleepData = async (id) => {
+  const query = `
+                  SELECT usd.* 
+                  FROM tbl_user u
+                  INNER JOIN tbl_user_sleep_data usd                      ON u.user_id = usd.user_id
+                  WHERE
+                    u.deactivated_datetime IS NULL
+                    AND u.user_id = ?
+  `;
+  return await mysql.query(query, [id]);
 };

@@ -6,6 +6,8 @@ const userController = require("../user");
 
 router.get("/", userController.getAllUsers);
 
+router.route("/sleepdata").get(userController.getUserSleepData);
+
 router.use("/:id", userController.isIdCorrect);
 
 router

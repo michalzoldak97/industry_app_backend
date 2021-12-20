@@ -8,7 +8,7 @@ exports.verify = catchAsync(async (req, res, next) => {
     !req.headers.authorization ||
     !req.headers.authorization.startsWith("Bearer")
   )
-    return next(new AppError("Authorization failed", 401));
+    return next(new AppError("User Authorization failed", 401));
   const token = req.headers.authorization.split(" ")[1];
   const response = await axios
     .post(`http://login_register_api:8082/verify`, {

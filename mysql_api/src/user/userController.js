@@ -142,3 +142,13 @@ exports.modifyUserChallenge = catchAsync(async (req, res, next) => {
     next
   );
 });
+
+exports.getUserSleepData = catchAsync(async (req, res, next) => {
+  const sleepData = await userModel.selectSleepData(req.userId);
+  responseHandler.respond(
+    { head: sleepData, data: sleepData },
+    { sCode: 200, errCode: 500, errMessage: "No data found" },
+    res,
+    next
+  );
+});

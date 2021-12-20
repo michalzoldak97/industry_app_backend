@@ -7,7 +7,9 @@
     "express": "^4.17.1",
     "mysql-await": "^2.1.8",
     "nodemon": "^2.0.7",
-    "axios": "^0.24.0"
+    "axios": "^0.24.0",
+    "helmet": "^3.16.0",
+    "xss-clean": "^0.1.1"
   },
   "scripts": {
     "test": "nodemon --watch . --exec 'mocha src/tests/user.js || true'",

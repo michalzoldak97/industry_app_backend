@@ -2,3 +2,5 @@
 node_modules/
 extensions/
 datadir/
+*.zip
+.idea/

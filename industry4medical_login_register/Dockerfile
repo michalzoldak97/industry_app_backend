@@ -6,6 +6,10 @@ COPY package.json /app
 
 RUN npm install
 
+COPY . .
+
 EXPOSE 8082
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
+
+# to run test on build: CMD ["npm", "run", "test"]

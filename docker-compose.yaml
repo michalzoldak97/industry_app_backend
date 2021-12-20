@@ -95,7 +95,8 @@ services:
   #   #   - elasticsearch
 
   mysql:
-    build: ./mysql
+    # build: ./mysql
+    image: "mysql:8"
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     volumes:
@@ -111,8 +112,8 @@ services:
       - ./.env/mysql.env
     networks:
       - app_net
-  #   depends_on:
-  #     - rabbitmq
+    depends_on:
+      - rabbitmq
 
   publisher_api:
     build: ./UserAntropometricsAPI
@@ -145,7 +146,7 @@ services:
       - mysql
     links:
       - rabbitmq
-    restart: on-failure
+    restart: always
 
   mysql_api:
     build: ./mysql_api
@@ -153,6 +154,9 @@ services:
       - "8090:8080"
     env_file:
       - ./.env/api_env.env
+    volumes:
+      - ./mysql_api/:/app
+      - /app/node_modules
     # logging:
     #   driver: gelf
     #   options:
@@ -165,12 +169,10 @@ services:
     restart: on-failure
 
   login_register_api:
+    container_name: "login_register_api"
     build: ./industry4medical_login_register
     ports:
       - "8092:8082"
-    volumes:
-      - ./industry4medical_login_register/:/app
-      - /app/node_modules
     env_file:
       - ./.env/api_env.env
     # logging:

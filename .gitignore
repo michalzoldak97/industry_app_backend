@@ -4,3 +4,4 @@ extensions/
 datadir/
 *.zip
 .idea/
+*.joblib

@@ -121,6 +121,9 @@ services:
       - "8091:8081"
     env_file:
       - ./.env/api_env.env
+    # volumes:
+    #   - ./UserAntropometricsAPI/:/app
+    #   - /app/node_modules
     # logging:
     #   driver: gelf
     #   options:
@@ -175,11 +178,26 @@ services:
       - "8092:8082"
     env_file:
       - ./.env/api_env.env
+    # volumes:
+    #   - ./industry4medical_login_register/:/app
+    #   - /app/node_modules
     # logging:
     #   driver: gelf
     #   options:
     #     gelf-address: "udp://localhost:12201"
     #     tag: "test_app_login_register_api"
+    networks:
+      - app_net
+    depends_on:
+      - mysql
+
+  sleep_data_ai:
+    container_name: "sleep_data_ai"
+    build: ./sleep_data_ai
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./.env/api_env.env
     networks:
       - app_net
     depends_on:

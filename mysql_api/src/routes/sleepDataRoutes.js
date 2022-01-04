@@ -1,10 +1,8 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const challengeController = require("../challenge");
-const idValidator = require("../utils");
+const sleepDataController = require("../sleepdata");
 
-router
-  .route("/")
-  .get(challengeController.getAllChallenges)
-  .post(challengeController.createChallenge);
+router.route("/").get(sleepDataController.getClassifiedData);
+
+module.exports = router;

@@ -29,10 +29,10 @@ exports.getUserByName = async (username) => {
 
 exports.createUser = async (user) => {
   const queryText = `
-                      INSERT INTO tbl_user (username, password)
-                      VALUES (?, ?)`;
+                      INSERT INTO tbl_user (username, password, last_logged_in)
+                      VALUES (?, ?, ?)`;
   const encryptedPass = await bcrypt.hash(user.password, 12);
-  return await db.query(queryText, [user.username, encryptedPass]);
+  return await db.query(queryText, [user.username, encryptedPass, new Date()]);
 };
 
 exports.updateLastLogin = async (id) => {

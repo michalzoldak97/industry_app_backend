@@ -8,6 +8,7 @@ const app = express();
 const userVerifier = require("./auth");
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
 app.use(helmet());
 

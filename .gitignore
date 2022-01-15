@@ -5,3 +5,4 @@ datadir/
 *.zip
 .idea/
 *.joblib
+*.sql

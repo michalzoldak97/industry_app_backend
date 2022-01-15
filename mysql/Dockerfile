@@ -2,4 +2,4 @@ FROM mysql:8
 
 EXPOSE 3306
 
-ADD ./21_12_21_dump.sql /docker-entrypoint-initdb.d
+ADD ./dump_15_01_2022.sql /docker-entrypoint-initdb.d

@@ -32,10 +32,10 @@ const getUserPermissions = async (userId) => {
   const permissions = JSON.parse(permissionData[0].access).map((x) => x.id);
   const subscribedChallenges = permissionData[1]?.access
     ? JSON.parse(permissionData[1].access).map((x) => x.id)
-    : null;
+    : [];
   const createdChallenges = permissionData[2]?.access
     ? JSON.parse(permissionData[2].access).map((x) => x.id)
-    : null;
+    : [];
   const access = {
     permissions,
     subscribedChallenges,

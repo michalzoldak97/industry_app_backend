@@ -63,9 +63,11 @@ exports.getUserChallenges = catchAsync(async (req, res, next) => {
 });
 
 exports.getUserChallenge = catchAsync(async (req, res, next) => {
+  console.log(req.userAccess.subscribedChallenges.includes(6));
   if (
     !req.userAccess.permissions.includes("admin") &&
-    !req.userAccess.createdChallenges.includes(req.params?.challenge)
+    !req.userAccess.createdChallenges.includes(req.params?.challenge) &&
+    !req.userAccess.subscribedChallenges.includes(+req.params?.challenge)
   )
     return next(
       new AppError("You have no perrmision to perform this operation", 403)

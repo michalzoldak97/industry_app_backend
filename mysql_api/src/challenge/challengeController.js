@@ -1,5 +1,5 @@
 "use strict";
-const { catchAsync } = require("../error");
+const { catchAsync, AppError } = require("../error");
 const responseHandler = require("../handler");
 const challengeModel = require("./challengeModel");
 

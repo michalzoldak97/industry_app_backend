@@ -35,6 +35,20 @@ exports.createUser = async (user) => {
   return await db.query(queryText, [user.username, encryptedPass, new Date()]);
 };
 
+exports.grantPermission = async (userId, permissionId) => {
+  const queryText = `
+                    INSERT INTO tbl_user_permission (user_id, permission_id)
+                    SELECT
+                        u.user_id
+                        ,?
+                    FROM  tbl_user u
+                    WHERE
+                        u.user_id = ?
+                        AND u.deactivated_datetime IS NULL
+  `;
+  return await db.query(queryText, [permissionId, userId]);
+};
+
 exports.updateLastLogin = async (id) => {
   const queryText = `
                      UPDATE tbl_user u

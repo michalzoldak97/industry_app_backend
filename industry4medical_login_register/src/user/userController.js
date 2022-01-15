@@ -55,6 +55,8 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.register = catchAsync(async (req, res, next) => {
   const { affectedRows } = await user.createUser(req.body);
+  const { user_id: userId } = await user.getUserByName(req.body.username);
+  await user.grantPermission(userId, 3);
   if (!affectedRows) return next(new AppError("User registration fail", 500));
   res.status(201).json({
     message: "success",

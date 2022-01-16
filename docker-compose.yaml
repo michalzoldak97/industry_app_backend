@@ -157,9 +157,9 @@ services:
       - "8090:8080"
     env_file:
       - ./.env/api_env.env
-    volumes:
-      - ./mysql_api/:/app
-      - /app/node_modules
+    # volumes:
+    #   - ./mysql_api/:/app
+    #   - /app/node_modules
     # logging:
     #   driver: gelf
     #   options:

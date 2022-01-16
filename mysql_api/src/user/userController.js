@@ -39,13 +39,6 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
-  if (
-    !req.userAccess.permissions.includes("admin") &&
-    req.userId != req.params.id
-  )
-    return next(
-      new AppError("You have no perrmision to perform this operation", 403)
-    );
   const user = await userModel.deactivateUser(req.params.id);
   responseHandler.respondEmpty(
     { head: user, data: user },
@@ -66,17 +59,6 @@ exports.getUserChallenges = catchAsync(async (req, res, next) => {
 });
 
 exports.getUserChallenge = catchAsync(async (req, res, next) => {
-  // if (
-  //   !req.userAccess.permissions.includes("admin") &&
-  //   !req.userAccess.createdChallenges.includes(+req.params?.challenge) &&
-  //   !(
-  //     req.userAccess.subscribedChallenges.includes(+req.params?.challenge) &&
-  //     req.userId == req.params.id
-  //   )
-  // )
-  // return next(
-  //   new AppError("You have no perrmision to perform this operation", 403)
-  // );
   const challenge = await userModel.selectUserChallenge(
     req.params.id,
     req.params?.challenge
@@ -90,13 +72,6 @@ exports.getUserChallenge = catchAsync(async (req, res, next) => {
 });
 
 exports.signUpUserChallenge = catchAsync(async (req, res, next) => {
-  if (
-    !req.userAccess.permissions.includes("admin") &&
-    !req.userAccess.createdChallenges.includes(+req.params?.challenge)
-  )
-    return next(
-      new AppError("You have no perrmision to perform this operation", 403)
-    );
   const result = await userModel.insertUserChallenge(
     req.params.id,
     req.params?.challenge
@@ -110,17 +85,6 @@ exports.signUpUserChallenge = catchAsync(async (req, res, next) => {
 });
 
 exports.signOffUserChallenge = catchAsync(async (req, res, next) => {
-  if (
-    !req.userAccess.permissions.includes("admin") &&
-    !req.userAccess.createdChallenges.includes(+req.params?.challenge) &&
-    !(
-      req.userAccess.subscribedChallenges.includes(+req.params?.challenge) &&
-      req.userId == req.params.id
-    )
-  )
-    return next(
-      new AppError("You have no perrmision to perform this operation", 403)
-    );
   const result = await userModel.deleteUserChallenge(
     req.params.id,
     req.params?.challenge
@@ -134,13 +98,6 @@ exports.signOffUserChallenge = catchAsync(async (req, res, next) => {
 });
 
 exports.modifyUserChallenge = catchAsync(async (req, res, next) => {
-  if (
-    !req.userAccess.permissions.includes("admin") &&
-    req.userId != req.params.id
-  )
-    return next(
-      new AppError("You have no perrmision to perform this operation", 403)
-    );
   const result = await userModel.updateUserChallenge(
     req.body,
     req.params.id,

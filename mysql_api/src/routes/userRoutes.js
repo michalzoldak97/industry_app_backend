@@ -14,7 +14,10 @@ router.use("/:id", userController.isIdCorrect);
 router
   .route("/:id")
   .get(userController.getUser)
-  .delete(userController.deleteUser);
+  .delete(
+    verifier.verifyPermissions(["isAdmin", "isUser"]),
+    userController.deleteUser
+  );
 
 router.route("/:id/challenges").get(userController.getUserChallenges);
 
@@ -24,8 +27,17 @@ router
     verifier.verifyPermissions(["isAdmin", "createdChallenge", "isSubscribed"]),
     userController.getUserChallenge
   )
-  .post(userController.signUpUserChallenge)
-  .delete(userController.signOffUserChallenge)
-  .put(userController.modifyUserChallenge);
+  .post(
+    verifier.verifyPermissions(["isAdmin", "createdChallenge"]),
+    userController.signUpUserChallenge
+  )
+  .delete(
+    verifier.verifyPermissions(["isAdmin", "createdChallenge", "isSubscribed"]),
+    userController.signOffUserChallenge
+  )
+  .put(
+    verifier.verifyPermissions(["isAdmin", "isUser"]),
+    userController.modifyUserChallenge
+  );
 
 module.exports = router;

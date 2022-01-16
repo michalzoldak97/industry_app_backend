@@ -36,13 +36,6 @@ exports.createChallenge = catchAsync(async (req, res, next) => {
 });
 
 exports.modifyChallenge = catchAsync(async (req, res, next) => {
-  if (
-    !req.userAccess.permissions.includes("admin") &&
-    !req.userAccess.createdChallenges.includes(req.params?.id)
-  )
-    return next(
-      new AppError("You have no perrmision to perform this operation", 403)
-    );
   const challenge = await challengeModel.updateChallenge(
     req.body,
     req.params.id

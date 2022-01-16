@@ -12,8 +12,11 @@ exports.isIdCorrect = (req, res, next) => {
 // admin
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await userModel.selectUsers();
+  const allUsers = !req.userAccess.permissions.includes("admin")
+    ? users.map((obj) => obj.username)
+    : users;
   responseHandler.respond(
-    { head: users, data: users },
+    { head: allUsers[0], data: allUsers },
     { sCode: 200, errCode: 404, errMessage: "No users found" },
     res,
     next
@@ -63,14 +66,17 @@ exports.getUserChallenges = catchAsync(async (req, res, next) => {
 });
 
 exports.getUserChallenge = catchAsync(async (req, res, next) => {
-  if (
-    !req.userAccess.permissions.includes("admin") &&
-    !req.userAccess.createdChallenges.includes(+req.params?.challenge) &&
-    !req.userAccess.subscribedChallenges.includes(+req.params?.challenge)
-  )
-    return next(
-      new AppError("You have no perrmision to perform this operation", 403)
-    );
+  // if (
+  //   !req.userAccess.permissions.includes("admin") &&
+  //   !req.userAccess.createdChallenges.includes(+req.params?.challenge) &&
+  //   !(
+  //     req.userAccess.subscribedChallenges.includes(+req.params?.challenge) &&
+  //     req.userId == req.params.id
+  //   )
+  // )
+  // return next(
+  //   new AppError("You have no perrmision to perform this operation", 403)
+  // );
   const challenge = await userModel.selectUserChallenge(
     req.params.id,
     req.params?.challenge
@@ -106,7 +112,11 @@ exports.signUpUserChallenge = catchAsync(async (req, res, next) => {
 exports.signOffUserChallenge = catchAsync(async (req, res, next) => {
   if (
     !req.userAccess.permissions.includes("admin") &&
-    !req.userAccess.createdChallenges.includes(+req.params?.challenge)
+    !req.userAccess.createdChallenges.includes(+req.params?.challenge) &&
+    !(
+      req.userAccess.subscribedChallenges.includes(+req.params?.challenge) &&
+      req.userId == req.params.id
+    )
   )
     return next(
       new AppError("You have no perrmision to perform this operation", 403)

@@ -24,3 +24,38 @@ exports.verify = catchAsync(async (req, res, next) => {
   req.userAccess = response.data.data?.userAccess;
   next();
 });
+
+const conditions = {
+  isAdmin: function (req) {
+    return req.userAccess.permissions.includes("admin");
+  },
+  isUser: function (req) {
+    return req.userId == req.params.id;
+  },
+  createdChallenge: function (req) {
+    return req.userAccess.createdChallenges.includes(+req.params?.challenge);
+  },
+  isSubscribed: function (req) {
+    return (
+      req.userAccess.subscribedChallenges.includes(+req.params?.challenge) &&
+      req.userId == req.params.id
+    );
+  },
+};
+
+exports.verifyPermissions = (con) => {
+  return (req, res, next) => {
+    let shouldPass = false;
+    for (let c of con) {
+      if (conditions[c](req)) {
+        shouldPass = true;
+        break;
+      }
+    }
+    if (shouldPass) next();
+    else
+      return next(
+        new AppError("You have no perrmision to perform this operation", 403)
+      );
+  };
+};

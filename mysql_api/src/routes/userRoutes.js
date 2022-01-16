@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../user");
+const verifier = require("../auth");
 
 router.get("/", userController.getAllUsers);
 
@@ -19,7 +20,10 @@ router.route("/:id/challenges").get(userController.getUserChallenges);
 
 router
   .route("/:id/challenge/:challenge")
-  .get(userController.getUserChallenge)
+  .get(
+    verifier.verifyPermissions(["isAdmin", "createdChallenge", "isSubscribed"]),
+    userController.getUserChallenge
+  )
   .post(userController.signUpUserChallenge)
   .delete(userController.signOffUserChallenge)
   .put(userController.modifyUserChallenge);

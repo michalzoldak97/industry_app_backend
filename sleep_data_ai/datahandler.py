@@ -64,6 +64,18 @@ def _transform_classify_data(sleep_data: list):
     return data_dict
 
 
+def _modify_data_model(t_data: dict):
+    stat_dict = t_data['stats']
+    del t_data['stats']
+    res_dict = {'stats': stat_dict, 'values': []}
+    for k in t_data:
+        sd_obj = {'DATE': int(datetime.strptime(k, '%Y-%m-%d %H:%M:%S').timestamp() * 1000), 'HR': t_data[k]['HR'],
+                  'VM': t_data[k]['VM'], 'STATE': t_data[k]['STATE']}
+        res_dict['values'].append(sd_obj)
+
+    return res_dict
+
+
 def _classify(usr_id: int, d_range: tuple):
     all_data = _transform_data(usr_id, d_range)
     x_set = [x[1:] for x in all_data]
@@ -72,7 +84,9 @@ def _classify(usr_id: int, d_range: tuple):
     for i, _ in enumerate(all_data):
         all_data[i].append(y_pred[i])
 
-    return _transform_classify_data(all_data)
+    t_data = _transform_classify_data(all_data)
+
+    return _modify_data_model(t_data)
 
 
 @app.route('/')

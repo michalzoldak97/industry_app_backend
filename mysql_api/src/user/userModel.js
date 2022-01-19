@@ -134,6 +134,27 @@ exports.updateUserChallenge = async (params, userId, challengeId) => {
   else return res;
 };
 
+const changeDataModel = (dataRow) => {
+  let values = [];
+  for (const [key, value] of Object.entries(dataRow)) {
+    const valObj = {
+      DATE: Date.parse(key),
+      HR: value["HR"],
+      VM: value["VM"],
+    };
+    values.push(valObj);
+  }
+  return values;
+};
+
+const modifySleepData = (data) => {
+  let sleepData = data.map((obj) =>
+    changeDataModel(JSON.parse(obj.sleep_data))
+  );
+  sleepData = sleepData.flat();
+  return sleepData;
+};
+
 exports.selectSleepData = async (id) => {
   const query = `
                   SELECT usd.* 
@@ -143,5 +164,6 @@ exports.selectSleepData = async (id) => {
                     u.deactivated_datetime IS NULL
                     AND u.user_id = ?
   `;
-  return await mysql.query(query, [id]);
+  const resData = await mysql.query(query, [id]);
+  return modifySleepData(resData);
 };

@@ -4,6 +4,10 @@ const server = require("../app");
 
 chai.should();
 
+const testVar = 1;
+
+testVar.should.be.eql(2);
+
 chai.use(chaiHttp);
 
 describe("Login Register API", () => {

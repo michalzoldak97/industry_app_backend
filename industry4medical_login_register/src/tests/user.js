@@ -11,7 +11,7 @@ describe("Login Register API", () => {
     it("It should validate user and return token", (done) => {
       chai
         .request(server)
-        .post("/login")
+        .post("/login/test/")
         .set("content-type", "application/x-www-form-urlencoded")
         .send({
           username: `${process.env.TEST_USERNAME}`,

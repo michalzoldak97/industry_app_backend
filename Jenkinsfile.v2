@@ -1,10 +1,24 @@
 node {
-    stage('Preparation') {
-        checkout scm
-    }
-    stage('Docker build/push') {
-        docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
-            def app = docker.build("michalzoldakcanister/i4m_user_api", "./industry4medical_login_register").push()
+    agent any
+    stages{
+        stage('Preparation') {
+            checkout scm
+        }
+        stage('Test user api') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile'
+                    dir './industry4medical_login_register'
+                }
+            }
+            steps {
+                sh 'npm run test'
+            }
+        }
+        stage('Docker build/push') {
+            docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
+                def app = docker.build("michalzoldakcanister/i4m_user_api", "./industry4medical_login_register").push()
+            }
         }
     }
 }

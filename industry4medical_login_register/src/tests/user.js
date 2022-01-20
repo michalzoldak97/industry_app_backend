@@ -26,4 +26,4 @@ describe("Login Register API", () => {
   });
 });
 
-testVar.should.be.eql(2);
+testVar.should.be.eql(1);

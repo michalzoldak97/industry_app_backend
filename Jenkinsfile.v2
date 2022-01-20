@@ -1,30 +1,39 @@
-pipeline {
-    agent none
-    stages{
-    //     stage('Preparation') {
-    //         steps {
-    //             checkout scm
-    //         }
-    //     }
-        stage('Test user api') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile'
-                    dir './industry4medical_login_register'
-                }
-            }
-            steps {
-                sh 'npm run test'
-            }
+// pipeline {
+//     agent none
+//     stages{
+//         stage('Test user api') {
+//             agent {
+//                 dockerfile {
+//                     filename 'Dockerfile'
+//                     dir './industry4medical_login_register'
+//                 }
+//             }
+//             steps {
+//                 sh 'npm run test'
+//             }
+//         }
+//         stage('Docker build/push') {
+//             steps {
+//                     script {
+//                         docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
+//                         def app = docker.build("michalzoldakcanister/i4m_user_api", "./industry4medical_login_register").push()
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+node {
+    checkout scm
+    stage('Test user API') {
+        def userAPIImage = docker.build("user-api-image", "./industry4medical_login_register")
+
+        userAPIImage.inside {
+            sh 'npm run test'
         }
-        stage('Docker build/push') {
-            steps {
-                    script {
-                        docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
-                        def app = docker.build("michalzoldakcanister/i4m_user_api", "./industry4medical_login_register").push()
-                    }
-                }
-            }
-        }
+    }
+    stage('Build Push user API') {
+        docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
+            def app = docker.build("michalzoldakcanister/i4m_user_api", "./industry4medical_login_register").push()
     }
 }

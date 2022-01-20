@@ -24,6 +24,10 @@ describe("Login Register API", () => {
         });
     });
   });
+  describe("Test if request fails", () => {
+    it("It should fail if not equal", (done) => {
+      testVar.should.be.eql(1);
+      done();
+    });
+  });
 });
-
-testVar.should.be.eql(1);

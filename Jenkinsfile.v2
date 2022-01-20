@@ -32,7 +32,7 @@ node {
         def userAPIImage = docker.build("user-api-image", "./industry4medical_login_register")
         def mysql = docker.image('mysql').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes --rm")
 
-        userAPIImage.inside("--link ${mysql.id}mysql") {
+        userAPIImage.inside("--link ${mysql.id}:mysql") {
             dir("industry4medical_login_register/") {
                     sh "npm install"
                     sh "npm run test"

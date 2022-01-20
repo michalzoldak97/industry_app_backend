@@ -2,7 +2,9 @@ pipeline {
     agent none
     stages{
         stage('Preparation') {
-            checkout scm
+            steps {
+                checkout scm
+            }
         }
         // stage('Test user api') {
         //     agent {
@@ -16,8 +18,10 @@ pipeline {
         //     }
         // }
         stage('Docker build/push') {
-            docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
-                def app = docker.build("michalzoldakcanister/i4m_user_api", "./industry4medical_login_register").push()
+            steps {
+                    docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
+                    def app = docker.build("michalzoldakcanister/i4m_user_api", "./industry4medical_login_register").push()
+                }
             }
         }
     }

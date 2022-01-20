@@ -10,6 +10,7 @@ pipeline {
             }
             steps {
                 dir("industry4medical_login_register/") {
+                    sh "npm install"
                     sh "npm run test"
                 }
             }

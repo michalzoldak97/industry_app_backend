@@ -1,12 +1,9 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../app");
-
-chai.should();
-
 const testVar = 1;
 
-testVar.should.be.eql(2);
+chai.should();
 
 chai.use(chaiHttp);
 
@@ -28,3 +25,5 @@ describe("Login Register API", () => {
     });
   });
 });
+
+testVar.should.be.eql(2);

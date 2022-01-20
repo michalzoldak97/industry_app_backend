@@ -29,6 +29,7 @@ node {
         def userAPIImage = docker.build("user-api-image", "./industry4medical_login_register")
 
         userAPIImage.inside {
+            sh 'npm install'
             sh 'npm run test'
         }
     }

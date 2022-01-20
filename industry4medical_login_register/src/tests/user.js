@@ -26,7 +26,7 @@ describe("Login Register API", () => {
   });
   describe("Test if request fails", () => {
     it("It should fail if not equal", (done) => {
-      testVar.should.be.eql(1);
+      testVar.should.be.eql(2);
       done();
     });
   });

@@ -29,7 +29,7 @@
 node {
     checkout scm
     stage('Test user API') {
-        def userAPIImage = docker.image("user-api-image", "./industry4medical_login_register")
+        def userAPIImage = docker.build("user-api-image", "./industry4medical_login_register")
 
         userAPIImage.inside {
             dir("industry4medical_login_register/") {

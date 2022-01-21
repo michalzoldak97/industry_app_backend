@@ -1,26 +1,35 @@
 node {
     checkout scm
     def dockerNodeImage = docker.image("node:16")
-    stage('Test user API') {
+    stage('Test') {
         def mysql = docker.image('mysql').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes --rm")
 
         dockerNodeImage.inside("--link ${mysql.id}:mysql") {
             dir("industry4medical_login_register/") {
-                    sh "npm install"
+                    sh "npm install --save-dev"
+                    sh "npm run test"
+                }
+        }
+        dockerNodeImage.inside() {
+             dir("Industry4MedicalRecieverAPI/") {
+                    sh "npm install --save-dev"
                     sh "npm run test"
                 }
         }
     }
-    stage('Build Push user API') {
+    stage('Build Push Docker Containers') {
         docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
             def app = docker.build("michalzoldakcanister/i4m_user_api", "./industry4medical_login_register").push()
+        }
+        docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
+            def app = docker.build("michalzoldakcanister/i4m_consumer", "./Industry4MedicalRecieverAPI").push()
         }
     }
     stage('Sonar scanner') {
         def sonarScannerHome = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
         nodejs(nodeJSInstallationName: 'nodejs') {
                 withCredentials([string(credentialsId: 'sonar', variable: 'sonarLogin')]) {
-                sh "${sonarScannerHome}/bin/sonar-scanner -e -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=${sonarLogin} -Dsonar.projectName=user-api -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=i4m -Dsonar.sources=."
+                sh "${sonarScannerHome}/bin/sonar-scanner -e -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=${sonarLogin} -Dsonar.projectName=industry-api -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=i4m -Dsonar.sources=."
             }
         }
     }

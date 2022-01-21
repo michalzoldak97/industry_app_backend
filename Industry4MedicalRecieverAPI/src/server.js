@@ -11,21 +11,25 @@ const connection_str =
   "@rabbitmq";
 
 const insertUserData = async (userID, sleepData) => {
-  let data_to_insert = [userID, sleepData];
-  let insert_statement =
+  const data_to_insert = [userID, sleepData];
+  const insert_statement =
     "INSERT INTO tbl_user_sleep_data (user_id, sleep_data) VALUES (?, ?);";
 
   await db.query(insert_statement, data_to_insert);
 };
 
-const sendDataToDb = async (msg_recieved) => {
-  let recievedJSON = JSON.parse(msg_recieved);
-  const userID = recievedJSON.userID.toString();
+exports.sendDataToDb = async (msg_recieved) => {
+  try {
+    recievedJSON = JSON.parse(msg_recieved);
+    const userID = recievedJSON.userID.toString();
 
-  delete recievedJSON.userID;
+    delete recievedJSON.userID;
 
-  const sleepData = JSON.stringify(recievedJSON);
-  await insertUserData(userID, sleepData);
+    const sleepData = JSON.stringify(recievedJSON);
+    await insertUserData(userID, sleepData);
+  } catch (e) {
+    throw e;
+  }
 };
 
 (async () => {
@@ -42,9 +46,15 @@ const sendDataToDb = async (msg_recieved) => {
   await channel.assertQueue(queue, { durable: false });
   channel.consume(queue, async (msg) => {
     if (msg) {
-      await sendDataToDb(msg.content.toString());
-      channel.ack(msg);
+      try {
+        await sendDataToDb(msg.content.toString());
+        channel.ack(msg);
+      } catch (e) {
+        console.log(e);
+      }
     }
   });
-  console.log(" [*] Waiting for messages. To exit press CTRL+ctrl");
+  console.log(
+    "Sleep data consumer is up and running. Waiting for some data to digest"
+  );
 })();

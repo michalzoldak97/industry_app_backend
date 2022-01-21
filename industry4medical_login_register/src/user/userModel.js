@@ -1,12 +1,13 @@
+"use strict";
 const db = require("../db");
 const bcrypt = require("bcrypt");
 
 exports.isCorrectPassword = async (recievedPass, userPass) => {
-  return await bcrypt.compare(recievedPass, userPass);
+  return bcrypt.compare(recievedPass, userPass);
 };
 
 const getDaysSince = (date) => {
-  currDate = new Date();
+  const currDate = new Date();
   const diff = currDate.getTime() - date.getTime();
   return Math.floor(diff / 86400000);
 };
@@ -32,7 +33,7 @@ exports.createUser = async (user) => {
                       INSERT INTO tbl_user (username, password, last_logged_in)
                       VALUES (?, ?, ?)`;
   const encryptedPass = await bcrypt.hash(user.password, 12);
-  return await db.query(queryText, [user.username, encryptedPass, new Date()]);
+  return db.query(queryText, [user.username, encryptedPass, new Date()]);
 };
 
 exports.grantPermission = async (userId, permissionId) => {
@@ -46,7 +47,7 @@ exports.grantPermission = async (userId, permissionId) => {
                         u.user_id = ?
                         AND u.deactivated_datetime IS NULL
   `;
-  return await db.query(queryText, [permissionId, userId]);
+  return db.query(queryText, [permissionId, userId]);
 };
 
 exports.updateLastLogin = async (id) => {
@@ -56,8 +57,7 @@ exports.updateLastLogin = async (id) => {
                      WHERE
                         u.user_id = ?
   `;
-  const res = await db.query(queryText, [new Date(), id]);
-  return res;
+  return db.query(queryText, [new Date(), id]);
 };
 
 exports.selectPermissionData = async (id) => {
@@ -88,6 +88,5 @@ exports.selectPermissionData = async (id) => {
                       u.user_id = ? 
 
 `;
-  const res = await db.query(queryText, [id, id, id]);
-  return res;
+  return db.query(queryText, [id, id, id]);
 };

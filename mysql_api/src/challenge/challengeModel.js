@@ -5,7 +5,7 @@ exports.selectAllChallenges = async () => {
   const query = `
                     SELECT * FROM tbl_challenge
     `;
-  return await mysql.query(query, []);
+  return mysql.query(query, []);
 };
 
 exports.selectChallenge = async (challengeId) => {
@@ -14,7 +14,7 @@ exports.selectChallenge = async (challengeId) => {
                     WHERE
                         challenge_id = ?
     `;
-  return await mysql.query(query, [challengeId]);
+  return mysql.query(query, [challengeId]);
 };
 
 exports.insertChallenge = async (challengeData) => {

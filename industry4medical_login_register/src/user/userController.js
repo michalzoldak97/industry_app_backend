@@ -14,14 +14,14 @@ const isValidToken = async (token) => {
   return decodedJwt.id;
 };
 
-const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user.user_id);
+const createSendToken = (usr, statusCode, res) => {
+  const token = signToken(usr.user_id);
   res.status(statusCode).json({
     status: "success",
     token,
     data: {
-      user: user.username,
-      daysSinceLastLogin: user.last_logged_in ?? "unknown",
+      usr: usr.username,
+      daysSinceLastLogin: usr.last_logged_in ?? "unknown",
     },
   });
 };
@@ -36,12 +36,11 @@ const getUserPermissions = async (userId) => {
   const createdChallenges = permissionData[2]?.access
     ? JSON.parse(permissionData[2].access).map((x) => x.id)
     : [];
-  const access = {
+  return (access = {
     permissions,
     subscribedChallenges,
     createdChallenges,
-  };
-  return access;
+  });
 };
 
 exports.login = catchAsync(async (req, res, next) => {

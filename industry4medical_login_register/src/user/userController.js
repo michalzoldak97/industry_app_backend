@@ -36,11 +36,11 @@ const getUserPermissions = async (userId) => {
   const createdChallenges = permissionData[2]?.access
     ? JSON.parse(permissionData[2].access).map((x) => x.id)
     : [];
-  return (access = {
+  return {
     permissions,
     subscribedChallenges,
     createdChallenges,
-  });
+  };
 };
 
 exports.login = catchAsync(async (req, res, next) => {

@@ -13,7 +13,7 @@ exports.selectUsers = async () => {
                     WHERE
                         u.deactivated_datetime IS NULL
     `;
-  return await mysql.query(query, []);
+  return mysql.query(query, []);
 };
 
 exports.selectUserById = async (userId) => {
@@ -28,7 +28,7 @@ exports.selectUserById = async (userId) => {
                       u.deactivated_datetime IS NULL
                       AND u.user_id = ?
   `;
-  return await mysql.query(query, [userId]);
+  return mysql.query(query, [userId]);
 };
 
 exports.deactivateUser = async (userId) => {
@@ -72,7 +72,7 @@ exports.selectUserChallenge = async (userId, challengeId) => {
                       AND u.user_id = ?
                       AND c.challenge_id = ?
   `;
-  return await mysql.query(query, [userId, challengeId]);
+  return mysql.query(query, [userId, challengeId]);
 };
 
 exports.insertUserChallenge = async (userId, challengeId) => {

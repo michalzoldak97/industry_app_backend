@@ -22,6 +22,12 @@ node {
                     sh "npm run test"
                 }
         }
+        dockerNodeImage.inside() {
+             dir("mysql_api/") {
+                    sh "npm install --save-dev"
+                    sh "npm run test"
+                }
+        }
     }
     stage('Build Push Docker Containers') {
         docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
@@ -32,6 +38,12 @@ node {
         }
         docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
             def app = docker.build("michalzoldakcanister/i4m_user_antropometrics", "./UserAntropometricsAPI").push()
+        }
+        docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
+            def app = docker.build("michalzoldakcanister/i4m_rest_api", "./mysql_api").push()
+        }
+        docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
+            def app = docker.build("michalzoldakcanister/i4m_sleep_data_ai", "./sleep_data_ai").push()
         }
     }
     stage('Sonar scanner') {

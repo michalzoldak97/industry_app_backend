@@ -56,10 +56,6 @@ node {
         sh "docker rmi cloud.canister.io:5000/michalzoldakcanister/i4m_user_api"
         sh "docker rmi cloud.canister.io:5000/michalzoldakcanister/i4m_consumer"
         sh "docker rmi cloud.canister.io:5000/michalzoldakcanister/i4m_user_antropometrics"
-    }
-    post {
-        always {
-            sh 'docker logout'
-        }
+        sh 'docker logout'
     }
 }

@@ -42,9 +42,6 @@ node {
         docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
             def app = docker.build("michalzoldakcanister/i4m_rest_api", "./mysql_api").push()
         }
-        docker.withRegistry('https://cloud.canister.io:5000/', 'canister') {
-            def app = docker.build("michalzoldakcanister/i4m_sleep_data_ai", "./sleep_data_ai").push()
-        }
     }
     stage('Sonar scanner') {
         def sonarScannerHome = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'

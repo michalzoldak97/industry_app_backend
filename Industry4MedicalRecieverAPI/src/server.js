@@ -60,4 +60,4 @@ const sendDataToDb = async (msg_recieved) => {
   );
 })();
 
-module.exports = sendDataToDb;
+exports.testSendData = async (msg) => sendDataToDb(msg);

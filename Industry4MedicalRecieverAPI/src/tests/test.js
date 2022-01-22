@@ -7,7 +7,7 @@ describe("Sleep Data consumer", async () => {
   describe("Invalid message scenatio", async () => {
     let errorMsg = `None`;
     try {
-      await server.sendDataToDb(undefined);
+      await server.testSendData(undefined);
     } catch (e) {
       errorMsg = e.toString();
     }

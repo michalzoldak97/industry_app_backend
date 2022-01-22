@@ -18,7 +18,7 @@ const insertUserData = async (userID, sleepData) => {
   await db.query(insert_statement, data_to_insert);
 };
 
-exports.sendDataToDb = async (msg_recieved) => {
+const sendDataToDb = async (msg_recieved) => {
   try {
     let recievedJSON = JSON.parse(msg_recieved);
     const userID = recievedJSON.userID.toString();
@@ -59,3 +59,5 @@ exports.sendDataToDb = async (msg_recieved) => {
     "Sleep data consumer is up and running. Waiting for some data to digest"
   );
 })();
+
+module.exports = sendDataToDb;

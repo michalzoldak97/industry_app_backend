@@ -7,6 +7,7 @@ import pymysql
 
 
 state_dict = {0: 'sleep', 1: 'lay', 2: 'active'}
+_time_format = '%Y-%m-%d %H:%M:%S'
 
 
 def _fetch_user_sleep_data(usr_id: int):
@@ -27,7 +28,7 @@ def _get_all_data(usr_id: int, d_range: tuple):
     data_list = []
     for row in rows:
         for k in row.keys():
-            data_row = [k, datetime.strptime(k, '%Y-%m-%d %H:%M:%S'), row[k]['HR'], row[k]['VM']]
+            data_row = [k, datetime.strptime(k, _time_format), row[k]['HR'], row[k]['VM']]
             if d_range[0] < data_row[1] < d_range[1]:
                 data_list.append(data_row)
 
@@ -69,7 +70,7 @@ def _modify_data_model(t_data: dict):
     del t_data['stats']
     res_dict = {'stats': stat_dict, 'values': []}
     for k in t_data:
-        sd_obj = {'DATE': int(datetime.strptime(k, '%Y-%m-%d %H:%M:%S').timestamp() * 1000), 'HR': t_data[k]['HR'],
+        sd_obj = {'DATE': int(datetime.strptime(k, _time_format).timestamp() * 1000), 'HR': t_data[k]['HR'],
                   'VM': t_data[k]['VM'], 'STATE': t_data[k]['STATE']}
         res_dict['values'].append(sd_obj)
 
@@ -105,8 +106,8 @@ def select_data():
 
     try:
         usr_id = int(usr_id)
-        from_date = datetime.strptime(from_date, '%Y-%m-%d %H:%M:%S')
-        to_date = datetime.strptime(to_date, '%Y-%m-%d %H:%M:%S')
+        from_date = datetime.strptime(from_date, _time_format)
+        to_date = datetime.strptime(to_date, _time_format)
     except ValueError:
         err_msg = {'Error': 'Query params have invalid format'}
         err_msg = jsonify(err_msg)

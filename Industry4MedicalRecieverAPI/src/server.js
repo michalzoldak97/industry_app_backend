@@ -20,7 +20,7 @@ const insertUserData = async (userID, sleepData) => {
 
 exports.sendDataToDb = async (msg_recieved) => {
   try {
-    recievedJSON = JSON.parse(msg_recieved);
+    let recievedJSON = JSON.parse(msg_recieved);
     const userID = recievedJSON.userID.toString();
 
     delete recievedJSON.userID;
@@ -28,6 +28,7 @@ exports.sendDataToDb = async (msg_recieved) => {
     const sleepData = JSON.stringify(recievedJSON);
     await insertUserData(userID, sleepData);
   } catch (e) {
+    console.log(e);
     throw e;
   }
 };

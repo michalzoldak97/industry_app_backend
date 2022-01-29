@@ -1,11 +1,19 @@
 const express = require("express");
 const helmet = require("helmet");
 const xss = require("xss-clean");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const { AppError, globalErrorHandler } = require("./error");
 const router = require("./routes");
 const app = express();
 
+app.use(cors());
+
+app.options("*", cors());
+
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use(helmet());
 

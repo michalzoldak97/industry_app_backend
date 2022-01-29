@@ -6,3 +6,4 @@ datadir/
 .idea/
 *.joblib
 *.sql
+*.code-workspace

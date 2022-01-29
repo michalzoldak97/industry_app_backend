@@ -2,10 +2,14 @@
 const express = require("express");
 const helmet = require("helmet");
 const xss = require("xss-clean");
+const cors = require("cors");
 const { AppError, globalErrorHandler } = require("./error");
 const router = require("./routes");
 const userVerifier = require("./auth");
 const app = express();
+
+app.use(cors());
+app.options("*", cors());
 
 app.use(express.json());
 

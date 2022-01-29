@@ -2,10 +2,14 @@
 const express = require("express");
 const helmet = require("helmet");
 const xss = require("xss-clean");
+const cors = require("cors");
 const { AppError, globalErrorHandler } = require("./error");
 const { userRouter, challengeRouter, sleepRouter } = require("./routes");
 const app = express();
 const userVerifier = require("./auth");
+
+app.use(cors());
+app.options("*", cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));

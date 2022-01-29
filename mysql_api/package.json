@@ -8,7 +8,8 @@
     "mysql-await": "^2.1.8",
     "axios": "^0.24.0",
     "helmet": "^3.16.0",
-    "xss-clean": "^0.1.1"
+    "xss-clean": "^0.1.1",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.7",

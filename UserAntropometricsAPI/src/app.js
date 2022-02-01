@@ -13,7 +13,6 @@ app.use(
     origin: "https://industry4medical.com",
   })
 );
-app.options("/", cors());
 
 app.use(express.json());
 

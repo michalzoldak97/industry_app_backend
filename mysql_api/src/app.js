@@ -8,7 +8,11 @@ const { userRouter, challengeRouter, sleepRouter } = require("./routes");
 const app = express();
 const userVerifier = require("./auth");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://industry4medical.com",
+  })
+);
 app.options("*", cors());
 
 app.use(express.json());

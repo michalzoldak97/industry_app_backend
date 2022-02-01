@@ -118,7 +118,7 @@ def select_data():
         res = jsonify(sleep_data)
         res.status_code = 200
         return res
-    except:
+    except ValueError:
         err_msg = {'Error': 'Failed to process data'}
         err_msg = jsonify(err_msg)
         err_msg.status_code = 500

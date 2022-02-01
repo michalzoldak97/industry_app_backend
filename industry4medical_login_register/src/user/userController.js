@@ -68,7 +68,11 @@ exports.register = catchAsync(async (req, res, next) => {
 exports.verify = catchAsync(async (req, res, next) => {
   const userId = await isValidToken(req.body.token);
   if (!userId) return next(new AppError("Token invalid", 401));
-  const access = req.body?.getAccess ? await getUserPermissions(userId) : 0;
+  const access =
+    req.body?.getAccess === "true" || req.body?.getAccess === true
+      ? await getUserPermissions(userId)
+      : 0;
+  console.log(req.body?.getAccess);
   res.status(200).json({
     message: "success",
     data: {
